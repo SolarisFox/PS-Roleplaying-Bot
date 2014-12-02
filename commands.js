@@ -6,6 +6,7 @@
 
 var http = require('http');
 var sys = require('sys');
+var translation = require('./translation.js');
 
 exports.commands = {
 	/**
@@ -13,8 +14,38 @@ exports.commands = {
 	 *
 	 * These commands are here to provide information about the bot.
 	 */
+	trad: function (arg, by, room, con) {
+		if (by.charAt(0) === ' ' && room.charAt(0) !== ',') return false;
+		var traduction = translation;
+		arg = arg.split(',');
+		if (arg.length !== 2) return this.say(con, room, 'Veuillez entrer la commande avec le Pokemon/Attaque/Talent et la langue auquelle vous voulez le traduire séparées par une virgule. Langues acceptables: en, fr, anglais, français, francais, english, french');
+		var mot = toId(arg[0]);
+		var lang = toId(arg[1]);
+		var index = ['en', 'anglais', 'english', 'fr', 'franais', 'francais', 'french'].indexOf(lang);
 
-	about: function(arg, by, room, con) {
+		switch (index) {
+		case -1: return this.say(con, room, 'Mauvaise langue entrée. Langues acceptables: en, fr, anglais, français, francais, english, french');
+		case 0:
+		case 1:
+		case 2:
+			for (var i = traduction.length; i--;) {
+				var match = traduction[i];
+				if (toId(match[0]) === mot) return this.say(con, room, match[0] + ' en anglais: ' + match[1]);
+			}
+			break;
+		case 3:
+		case 4:
+		case 5:
+		case 6:
+			for (var i = traduction.length; i--;) {
+				var match = traduction[i];
+				if (toId(match[1]) === mot) return this.say(con, room, match[1] + ' en français: ' + match[0]);
+			}
+			break;
+		}
+		this.say(con, room, 'Aucune translation cherchée. Corrigez votre orthographe, peut-être? Sinon, envoyez Morfent un MP pour qu\'il puisse la corriger tout de suite.');
+	},
+		about: function(arg, by, room, con) {
 		if (this.hasRank(by, '#~') || room.charAt(0) === ',') {
 			var text = '';
 		} else {
