@@ -43,7 +43,7 @@ exports.commands = {
 			}
 			break;
 		}
-		this.say(con, room, 'Aucune translation cherchée. Corrigez votre orthographe, peut-être? Sinon, envoyez Morfent un MP pour qu\'il puisse la corriger tout de suite.');
+		this.say(con, room, 'Aucune translation cherchée. Corrigez votre orthographe ou incluer les accents, peut-être? Sinon, envoyez Morfent un MP pour qu\'il puisse la corriger.');
 	},
 		about: function(arg, by, room, con) {
 		if (this.hasRank(by, '#~') || room.charAt(0) === ',') {
